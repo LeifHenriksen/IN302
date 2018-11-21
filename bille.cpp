@@ -1,5 +1,7 @@
 #include "bille.h"
+#include "window.h"
 #include <stdio.h>
+#include <string>
 
 
 Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), maDirection(DROITE){
@@ -39,4 +41,10 @@ Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x
     }
     void Bille::setDirDepart(DirectionDepart dir){
         maDirection=dir;
+    }
+    
+    void Bille::print(WINDOW* w) const{
+        mvwprintw(w,posY,posX,'o');
+        wrefresh(w);
+        refresh();
     }

@@ -40,7 +40,7 @@ public:
     
     
     void changerTrajectoire();
-    
+    void print(WINDOW* w) const;
     
 };
 #endif
