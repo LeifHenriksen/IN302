@@ -1,14 +1,15 @@
 #ifndef __BILLE_H
 #define __BILLE_H
-
+#include <ncurses.h>
+#include "window.h"
 
 class Bille{
 
 public:
     
     enum DirectionDepart {
-        GAUCHE,
-        DROITE
+    GAUCHE,
+    DROITE,
     };
     
 private:

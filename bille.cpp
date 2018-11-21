@@ -4,7 +4,7 @@
 #include <string>
 
 
-Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), maDirection(DROITE){
+Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), maDirection(GAUCHE){
 }
 
 Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x), posY(y), directionX(dirX), directionY(dirY), maDirection(dirDebut){
@@ -44,7 +44,8 @@ Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x
     }
     
     void Bille::print(WINDOW* w) const{
-        mvwprintw(w,posY,posX,'o');
+        std::string x(1,'o');
+        mvwprintw(w,posY,posX,x.c_str());
         wrefresh(w);
         refresh();
     }
