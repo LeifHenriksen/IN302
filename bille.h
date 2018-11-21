@@ -23,7 +23,7 @@ private:
 public:
     
     Bille();
-    Bille(int positionX, int positionY, DirectionDepart dirDebut);
+    Bille(int positionX, int positionY, int dirX, int dirY, DirectionDepart dirDebut);
     
     
     int getX() const;
@@ -39,5 +39,8 @@ public:
     void setDirDepart(DirectionDepart dir);
     
     
+    void changerTrajectoire();
     
+    
+};
 #endif

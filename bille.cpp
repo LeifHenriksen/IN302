@@ -1,4 +1,5 @@
 #include "bille.h"
+#include <stdio.h>
 
 
 Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), maDirection(DROITE){
@@ -36,6 +37,6 @@ Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x
     void Bille::setDirY(int dirY){
         directionY=dirY;
     }
-    void Bille::setDirDepart(directionDepart dir){
+    void Bille::setDirDepart(DirectionDepart dir){
         maDirection=dir;
     }
