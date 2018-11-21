@@ -1,10 +1,9 @@
-#include "window.h"
+//#include "window.h"
 #include "platf.h"
 #include "options.h"
+#include "bille.h"
 #include <ncurses.h>
-#include <string>
-#include"briques.h"
-
+//#include <string>
 void jeu(options opt){
   
   int ch;
@@ -27,70 +26,64 @@ void jeu(options opt){
   plateau.print(x,y,p,col);
 
   char c  =  '-';
+  Bille::DirectionDepart testGauche = Bille::GAUCHE;
   platf pla1(opt.getLongPla(), x ,y ,c);
   pla1.print(plateau.getwin());
-
-  Brique bri;
-  bri.printBrique(plateau.getwin());
-  
+  Bille bille1=Bille(x,y,0,0,'o',testGauche);
+  bille1.print(plateau.getwin());
   while((ch = getch()) != 'q')
-    {    
-      switch (ch)
-	{
-	case '1':
-	  col=BMAGENTA;
-	  break;
-	case '2':
-	  col=WCYAN;
-	  break;
-	case 'c':
-	  plateau.clear();
-	  break;
-	case KEY_UP:
-	  //	plateau.print(x,y,' ');
-	  //plateau.print(x,--y,p,col);
-	  //pla1.sety(--y);
-	  //	pla1.print(plateau.getwin());
-	  
-	  
-	  break;
-	case KEY_DOWN:
-	  //	plateau.print(x,y,' ');
-	  //	plateau.print(x,++y,p,col);
-	  break;  
-	case KEY_LEFT:
-	  //	plateau.print(x,y,' ');
-	  //	plateau.print(--x,y,p,col);
-	  pla1.printVide(plateau.getwin());
-	  if( pla1.contactmurG(plateau.getLargeur())) {
-	    pla1.setx(--x);
-	  }
-	  pla1.print(plateau.getwin());
-	  bri.printVide(plateau.getwin());
-	  
-	  break;
-	case KEY_RIGHT:
-	  //	plateau.print(x,y,' ');
-	  // plateau.print(++x,y,p,col);
-	  pla1.printVide(plateau.getwin());
-	  if( pla1.contactmurD(plateau.getLargeur())) {
-	    pla1.setx(++x);
-	  }
-	  pla1.print(plateau.getwin());
+    {
+      switch (ch) {
+      case '1':
+	col=BMAGENTA;
 	break;
-	case '\n':
-	  x=w/2,y=h/2;
-	  plateau.print(x,y,p,col);
+      case '2':
+	col=WCYAN;
 	break;
-	case '\t':
-	  Color tmp= menu.getCouleurBordure();
-	  menu.setCouleurBordure(plateau.getCouleurBordure());
-	  plateau.setCouleurBordure(tmp);
-	  break;
-	  
+      case 'c':
+	plateau.clear();
+	break;
+      case KEY_UP:
+	//	plateau.print(x,y,' ');
+	//plateau.print(x,--y,p,col);
+	//pla1.sety(--y);
+	//	pla1.print(plateau.getwin());
 	
+
+	break;
+      case KEY_DOWN:
+	//	plateau.print(x,y,' ');
+	//	plateau.print(x,++y,p,col);
+	break;
+      case KEY_LEFT:
+	//	plateau.print(x,y,' ');
+	//	plateau.print(--x,y,p,col);
+	pla1.printVide(plateau.getwin());
+	if( pla1.contactmurG(plateau.getLargeur())) {
+	pla1.setx(--x);
 	}
-     
+	pla1.print(plateau.getwin());
+
+	break;
+      case KEY_RIGHT:
+	//	plateau.print(x,y,' ');
+	// plateau.print(++x,y,p,col);
+	pla1.printVide(plateau.getwin());
+	if( pla1.contactmurD(plateau.getLargeur())) {
+	pla1.setx(++x);
+	}
+	pla1.print(plateau.getwin());
+	break;
+      case '\n':
+	x=w/2,y=h/2;
+	plateau.print(x,y,p,col);
+	break;
+      case '\t':
+    	Color tmp= menu.getCouleurBordure();
+	menu.setCouleurBordure(plateau.getCouleurBordure());
+	plateau.setCouleurBordure(tmp);
+	break;
+      }
     }
 
   
@@ -106,7 +99,6 @@ void myprogram(){
   std::string h = std::to_string(opt.getH());
   mainmenu.print(0 , 0 , h);
   std::string w = std::to_string(opt.getL());
-
   mainmenu.print(20 , 0 , w);
   /*
     WINDOW * mainmenu = newwin(opt.getH(),opt.getL(),0,0);

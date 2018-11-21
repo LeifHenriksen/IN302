@@ -4,10 +4,10 @@
 #include <string>
 
 
-Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), maDirection(GAUCHE){
+Bille::Bille() : posX(0), posY(0), directionX(0), directionY(0), icone('o'), maDirection(GAUCHE){
 }
 
-Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x), posY(y), directionX(dirX), directionY(dirY), maDirection(dirDebut){
+Bille::Bille(int x, int y, int dirX, int dirY, char icon, DirectionDepart dirDebut): posX(x), posY(y), directionX(dirX), directionY(dirY), icone(icon), maDirection(dirDebut){
 }
 
     int Bille::getX() const{
@@ -21,6 +21,9 @@ Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x
     }
     int Bille::getDirY() const{
         return directionY;
+    }
+    char Bille::getIcone() const{
+        return icone;
     }
     int Bille::getDirDepart() const{
         return maDirection;
@@ -39,12 +42,15 @@ Bille::Bille(int x, int y, int dirX, int dirY, DirectionDepart dirDebut): posX(x
     void Bille::setDirY(int dirY){
         directionY=dirY;
     }
+    void Bille::setIcone(char icon){
+        icone=icon;
+    }
     void Bille::setDirDepart(DirectionDepart dir){
         maDirection=dir;
     }
     
     void Bille::print(WINDOW* w) const{
-        std::string x(1,'o');
+        std::string x(1,icone);
         mvwprintw(w,posY,posX,x.c_str());
         wrefresh(w);
         refresh();
