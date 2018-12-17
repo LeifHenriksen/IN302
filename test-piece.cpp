@@ -1,76 +1,307 @@
 #include "window.h"
 #include "platf.h"
+#include "options.h"
 #include <ncurses.h>
+#include <string>
+#include <cstdlib>
+#include <chrono>
+#include <thread>
+#include "briques.h"
+#include "tableauBriques.h"
+#include "joueur.h"
 
-void myprogram(){
-  int ch;
-  int h=10,w=50;
-  Window menu(3,30,52,0);
-  Window plateau(h,w,0,0);
+
+void jeu(options opt){
+  using namespace std::this_thread; // sleep_for, sleep_until
+  using namespace std::chrono; // nanoseconds, system_clock, seconds
+  
+
+
+  
+  int ch; //ch = char clavier
+  int h=opt.getH(),w=opt.getL();
+
+  unsigned int vitesse = opt.getVitesse();
+  //creation de fenetres
+
+  //W(hauteur , longeur , posX , posY , bord?)
+  Window menu((opt.getH()/2)-2,(opt.getL()/3)-1,(opt.getL()/(1.5)),0,0);
+  Window plateau(opt.getH()-2,(opt.getL()/(1.5))-2,0,0,0);
+  Window infoJoueur((opt.getH()/2)-2,(opt.getL()/3)-1,(opt.getL()/(1.5)),opt.getH()/2,0);
+
+  //changer les couleurs des bords
   menu.setCouleurBordure(BRED);
   plateau.setCouleurBordure(BBLUE);
-  
+  infoJoueur.setCouleurBordure(BYELLOW);
+  //---------------------text menu--------------------//
   menu.print(1,1,"Tapez q pour quitter !!!",WRED);
+  //-----------------------fin text menu---------------//
   
-  int x=w/2,y=h/2;
-  char p='X';
-  Color col=WBLUE;
-  plateau.print(x,y,p,col);
+  //-----------------------Joueur----------------------//
+  //x,y
+  infoJoueur.print(((infoJoueur.getLargeur())/2)-5,0,"---STATS---",WYELLOW);
+  joueur J( "Bob", 3 , 1 , 0);
+  J.printStats(infoJoueur.getwin());
+  
+  //----------------------fin Joueur-----------------------------//
 
-  char c  = '0';
-  platf pla1(5, x , h-1 ,c);
+
+  
+  //---------------------raquette Start------------------------//
+
+  //y=plateau.getHauteur()-3 = 3 pixel sur le sol
+  int x=plateau.getLargeur()/2,y=plateau.getHauteur()-3;
+
+  //c = le char de la raquette
+  char c  =  '-';
+
+  //creation de la raquette
+  platf pla1(opt.getLongPla(), x ,y ,c);
+
+  //print de la raquete
   pla1.print(plateau.getwin());
   
-  while((ch = getch()) != 'q')
+  //--------------------raquette Fin---------------------------//
+
+  Color col=WBLUE;
+
+  //-----------------------creation tabBriques-----------------//
+  tableauBriques tab;
+  tab.printTableauBriques(plateau.getwin());
+  //-----------------------------fin creation-------------------//
+
+  //-------------------------------instructions-----------------//
+  std::string str= "SPACE ou KEY_DOWN pour arreter la plataforme ";
+  plateau.popup(str);
+  tab.printTableauBriques(plateau.getwin());
+  //---------------------------fin instruc------------------------//
+  
+  //----------------------boucle de jeu et controls--------------//
+  while(ch != 'q' && (ch = getch()) != 'q')
     {
-      switch (ch) {
-      case '1':
-	col=BMAGENTA;
+      J.printStats(infoJoueur.getwin());
+      switch (ch)
+	{
+	case '1':
+	  col=BMAGENTA;
+	  break;
+	case '2':
+	  col=WCYAN;
+	  break;
+	case 'c':
+	  plateau.clear();
+	  break;
+	case KEY_UP:
+	  break;
+	case KEY_DOWN:
+	  break;  
+	case KEY_LEFT:
+	{
+	 
+	    while(ch != ' ' && ch != KEY_DOWN && ch != 'q' )
+	      {
+		while((ch = getch()) != KEY_RIGHT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
+		  {
+		    //------------------mvt platf------------------//
+		    pla1.printVide(plateau.getwin());
+		    if( pla1.contactmurG(plateau.getLargeur()))
+			{
+			  pla1.setx((pla1.getx())-1);
+			}
+		    pla1.print(plateau.getwin());
+		    //----------------------------------------------//
+		    
+		    //---------------le reste du jeu---------------//
+		    J.addScore(1);		    
+		    J.printStats(infoJoueur.getwin());
+		    tab.printTableauBriques(plateau.getwin());
+		    //---------------------------------------------//
+		    //le delay
+		    sleep_for(milliseconds(vitesse));
+		  }
+		  if(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
+		    {
+		      
+		      while((ch = getch()) != KEY_LEFT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
+			{
+			   //------------------mvt platf------------------//
+			  pla1.printVide(plateau.getwin());
+			  if( pla1.contactmurD(plateau.getLargeur()))
+			    {
+			      pla1.setx((pla1.getx())+1);
+			    }
+			  pla1.print(plateau.getwin());
+			  //---------------------------------------------//
+			  //---------------le reste du jeu---------------//
+			  J.addScore(1);			  
+			  J.printStats(infoJoueur.getwin());
+			  tab.printTableauBriques(plateau.getwin());
+			   //---------------------------------------------//
+			  //le delay
+			  sleep_for(milliseconds(vitesse));
+			}
+		      
+		    }
+	      }
+	}
 	break;
-      case '2':
-	col=WCYAN;
-	break;
-      case 'c':
-	plateau.clear();
-	break;
-      case KEY_UP:
-	//	plateau.print(x,y,' ');
-	//plateau.print(x,--y,p,col);
-	//pla1.sety(--y);
-	//	pla1.print(plateau.getwin());
-	
-
-	break;
-      case KEY_DOWN:
-	//	plateau.print(x,y,' ');
-	//	plateau.print(x,++y,p,col);
-	break;
-      case KEY_LEFT:
-	//	plateau.print(x,y,' ');
-	//	plateau.print(--x,y,p,col);
-pla1.printVide(plateau.getwin());
-	pla1.setx(--x);
-	pla1.print(plateau.getwin());
-
-	break;
-      case KEY_RIGHT:
-	//	plateau.print(x,y,' ');
-	// plateau.print(++x,y,p,col);
-	pla1.printVide(plateau.getwin());
-	pla1.setx(++x);
-	pla1.print(plateau.getwin());
-	break;
-      case '\n':
-	x=w/2,y=h/2;
-	plateau.print(x,y,p,col);
-	break;
-      case '\t':
-	Color tmp= menu.getCouleurBordure();
-	menu.setCouleurBordure(plateau.getCouleurBordure());
-	plateau.setCouleurBordure(tmp);
-	break;
-      }
+	case KEY_RIGHT:
+	  {
+	    
+	    while(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
+	      {
+		while((ch = getch()) != KEY_LEFT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
+		  {
+		    //------------------mvt platf------------------//
+		    pla1.printVide(plateau.getwin());
+		    if( pla1.contactmurD(plateau.getLargeur()))
+		      {
+			pla1.setx((pla1.getx())+1);
+		      }
+		    pla1.print(plateau.getwin());
+		    //---------------------------------------------//
+		    //---------------le reste du jeu---------------//
+		    J.addScore(1);		    
+		    J.printStats(infoJoueur.getwin());
+		    tab.printTableauBriques(plateau.getwin());
+		     //---------------------------------------------//
+		    //le delay
+		    sleep_for(milliseconds(vitesse));
+		  }
+		if(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
+		  {
+		    while((ch = getch()) != KEY_RIGHT && ch !=' ' && ch != KEY_DOWN && ch != 'q' )
+		      {
+			//------------------mvt platf------------------//
+			pla1.printVide(plateau.getwin());
+			if( pla1.contactmurG(plateau.getLargeur()))
+			  {
+			    pla1.setx((pla1.getx())-1);
+			  }
+			pla1.print(plateau.getwin());
+			//---------------------------------------------//
+			//---------------le reste du jeu---------------//
+			J.addScore(1);			
+			J.printStats(infoJoueur.getwin());
+			tab.printTableauBriques(plateau.getwin());
+			//---------------------------------------------//
+			//le delay
+			sleep_for(milliseconds(vitesse));
+			
+		      }
+		  }
+	      }
+	  }
+	  
+	  break;
+	case '\n':
+	  break;
+	case '\t':
+	  Color tmp= menu.getCouleurBordure();
+	  menu.setCouleurBordure(plateau.getCouleurBordure());
+	  plateau.setCouleurBordure(tmp);
+	  break;
+	  
+	}
+      J.addScore(1);
+      //le delay
+     	sleep_for(milliseconds(vitesse));
+      
     }
+  
+  //---------------------------finBoucle de jeu--------------------------//
+  
+
+}
+
+void myprogram(){
+
+  options opt;
+
+  Window mainmenu(opt.getH()-2 , opt.getL()-2 , 0 , 0 , 0);
+
+  //print la taille de la fenetre au debut
+  std::string h = std::to_string(opt.getH());
+  mainmenu.print(0 , 0 , h);
+  std::string w = std::to_string(opt.getL());
+  mainmenu.print(20 , 0 , w);
+
+
+  //les trois options du menu
+  std::string choices[3] = {"Jeu","Options","Exit"};
+
+  int choice;
+  int highlight = 0;
+  mainmenu.keypadon();
+
+
+  //exemple popup
+  //std::string str= "hola \n " + std::to_string(m);
+  //mainmenu.popup(str);
+
+ 
+  //----------------------------MENU-START--------------------------------//
+
+  while(1)
+    {
+      //   box(mainmenu  ,0 , 0);
+    
+      mainmenu.updateframe();
+
+      
+      for(int i = 0 ; i<3 ; i++)
+	{
+	  if(i==highlight)
+	    wattron(mainmenu.getwin() , A_REVERSE);
+	  //print menu principal
+	  mvwprintw(mainmenu.getwin() , ((opt.getH()/(2)-2))+i , ((opt.getL()/(2))-4)-2 , choices[i].c_str());
+	  wattroff(mainmenu.getwin() , A_REVERSE);
+	}
+      choice = wgetch(mainmenu.getwin());
+      
+      switch(choice)
+	{
+	case KEY_UP:
+	  highlight--;
+	  if (highlight == -1)
+	    highlight = 0;
+	  break;
+	case KEY_DOWN:
+	  highlight++;
+	  if (highlight == 3)
+	    highlight = 2;
+	  break;
+	  
+	default:
+	  break;
+	  
+	}
+      
+      if(choice == 10)
+	{
+	  switch(highlight)
+	    {
+	    case 0:
+	      jeu(opt);
+	      break;
+	    case 1:
+	      opt.menu();
+	      break;
+	    case 2:
+	      break;
+	      
+	    }
+	}
+      werase(mainmenu.getwin());
+      if(choice == 10){
+	if(highlight == 2)
+	  break;
+      }
+      
+    }
+  
+  //----------------------------MENU-FIN--------------------------------//
+
 }
 
 int main(){

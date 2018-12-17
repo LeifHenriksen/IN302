@@ -63,11 +63,22 @@ class Window {
   int getHauteur() const ; // récupère la hauteur de la fenêtre
   int getLargeur() const ; // récupère la largeur de la fenêtre
 
+  //pour print platfr
+  WINDOW* getwin() const;
+
+  WINDOW* getframe() const;
+
+  //pour menus
+  void keypadon() const;
+  void updateframe() const;
+  
   Color getCouleurBordure() const; // récupère la couleur de la bordure
   Color getCouleurFenetre() const; // récupère la couleur de la fenêtre
   void setCouleurBordure(Color);   // modifie la couleur de la bordure
   void setCouleurFenetre(Color);   // modifie la couleur de la fenêtre (ATTENTION, tout le contenu de la fenêtre prend la couleur)
 
+  void popup(std::string str) const;
+  void popupTimer(std::string str , unsigned int ms)const;
   void clear() const; // enleve tout le contenu de la fenêtre
 
 };
