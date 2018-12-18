@@ -104,123 +104,42 @@ void jeu(options opt){
 	case KEY_DOWN:
 	  break;  
 	case KEY_LEFT:
-	{
-	 
-	    while(ch != ' ' && ch != KEY_DOWN && ch != 'q' )
-	      {
-		while((ch = getch()) != KEY_RIGHT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
-		  {
-		    //------------------mvt platf------------------//
-		    pla1.printVide(plateau.getwin());
-		    if( pla1.contactmurG(plateau.getLargeur()))
-			{
-			  pla1.setx((pla1.getx())-1);
-			}
-		    pla1.print(plateau.getwin());
-		    //----------------------------------------------//
-            
-		    //---------------Bille-------------------------//
-            
-            maBille.effacePrintBille(plateau.getwin());
-            maBille.setX(pla1.getx()+pla1.getlongr()/2);
-            maBille.setY(pla1.gety()-1);
-            maBille.setDirDepart(Bille::DROITE);
-            maBille.print(plateau.getwin());
-            
-            //----------------------------------------------//
-            
-		    //---------------le reste du jeu---------------//
-		    J.addScore(1);		    
-		    J.printStats(infoJoueur.getwin());
-		    tab.printTableauBriques(plateau.getwin());
-		    //---------------------------------------------//
-		    //le delay
-		    sleep_for(milliseconds(vitesse));
-		  }
-		  if(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
-		    {
-		      
-		      while((ch = getch()) != KEY_LEFT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
-			{
-			   //------------------mvt platf------------------//
-			  pla1.printVide(plateau.getwin());
-			  if( pla1.contactmurD(plateau.getLargeur()))
-			    {
-			      pla1.setx((pla1.getx())+1);
-			    }
-			  pla1.print(plateau.getwin());
-			  //---------------------------------------------//
-              
-		    //---------------Bille-------------------------//
-            
-            maBille.effacePrintBille(plateau.getwin());
-            maBille.setX(pla1.getx()+pla1.getlongr()/2);
-            maBille.setY(pla1.gety()-1);
-            maBille.setDirDepart(Bille::GAUCHE);
-            maBille.print(plateau.getwin());
-            
-            //----------------------------------------------//
-            
-			  //---------------le reste du jeu---------------//
-			  J.addScore(1);			  
-			  J.printStats(infoJoueur.getwin());
-			  tab.printTableauBriques(plateau.getwin());
-			   //---------------------------------------------//
-			  //le delay
-			  sleep_for(milliseconds(vitesse));
-			}
-		      
-		    }
-	      }
-	}
-	break;
+	  {
+	     pla1.printVide(plateau.getwin());
+	     maBille.effacePrintBille(plateau.getwin());
+	     if( pla1.contactmurG(plateau.getLargeur()))
+	       {
+		maBille.setX(maBille.getX()-1);
+		pla1.setx((pla1.getx())-1);
+	       }
+	     
+	     
+	     maBille.setDirDepart(Bille::DROITE);
+	     //prints
+	     maBille.print(plateau.getwin());
+	     pla1.print(plateau.getwin());
+	  }
+
+	  
+	  break;
 	case KEY_RIGHT:
 	  {
-	    
-	    while(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
-	      {
-		while((ch = getch()) != KEY_LEFT && ch != ' ' && ch != KEY_DOWN && ch != 'q' )
-		  {
-		    //------------------mvt platf------------------//
-		    pla1.printVide(plateau.getwin());
-		    if( pla1.contactmurD(plateau.getLargeur()))
-		      {
-			pla1.setx((pla1.getx())+1);
-		      }
-		    pla1.print(plateau.getwin());
-		    //---------------------------------------------//
-		    //---------------le reste du jeu---------------//
-		    J.addScore(1);		    
-		    J.printStats(infoJoueur.getwin());
-		    tab.printTableauBriques(plateau.getwin());
-		     //---------------------------------------------//
-		    //le delay
-		    sleep_for(milliseconds(vitesse));
-		  }
-		if(ch != ' '&& ch != KEY_DOWN && ch != 'q' )
-		  {
-		    while((ch = getch()) != KEY_RIGHT && ch !=' ' && ch != KEY_DOWN && ch != 'q' )
-		      {
-			//------------------mvt platf------------------//
-			pla1.printVide(plateau.getwin());
-			if( pla1.contactmurG(plateau.getLargeur()))
-			  {
-			    pla1.setx((pla1.getx())-1);
-			  }
-			pla1.print(plateau.getwin());
-			//---------------------------------------------//
-			//---------------le reste du jeu---------------//
-			J.addScore(1);			
-			J.printStats(infoJoueur.getwin());
-			tab.printTableauBriques(plateau.getwin());
-			//---------------------------------------------//
-			//le delay
-			sleep_for(milliseconds(vitesse));
-			
-		      }
-		  }
-	      }
+
+	   pla1.printVide(plateau.getwin());
+	     maBille.effacePrintBille(plateau.getwin());
+	     if( pla1.contactmurD(plateau.getLargeur()))
+	       {
+		maBille.setX(maBille.getX()+1);
+		pla1.setx((pla1.getx())+1);
+	       }
+	     
+	     
+	     maBille.setDirDepart(Bille::GAUCHE);
+	     //prints
+	     maBille.print(plateau.getwin());
+	     pla1.print(plateau.getwin());
 	  }
+	  break;
 	  
 	  break;
 	case '\n':
