@@ -9,13 +9,15 @@
 #include "briques.h"
 #include "tableauBriques.h"
 #include "joueur.h"
+#include "highScore.h"
+
 
 
 void jeu(options opt){
   using namespace std::this_thread; // sleep_for, sleep_until
   using namespace std::chrono; // nanoseconds, system_clock, seconds
   
-
+ 
 
   
   int ch; //ch = char clavier
@@ -210,7 +212,11 @@ void jeu(options opt){
     }
   
   //---------------------------finBoucle de jeu--------------------------//
-  
+  highScore high;
+  if(high.estUnHighScore(J.getScore()))
+    high.mettreNouveauHighScore(J.getScore(),J.getNomJ());
+
+high.pop(plateau);
 
 }
 
@@ -297,7 +303,7 @@ void myprogram(){
 	if(highlight == 2)
 	  break;
       }
-      
+
     }
   
   //----------------------------MENU-FIN--------------------------------//
