@@ -8,6 +8,7 @@
 #include <thread>
 #include "briques.h"
 #include "tableauBriques.h"
+#include "bille.h"
 #include "joueur.h"
 
 
@@ -68,7 +69,14 @@ void jeu(options opt){
   //-----------------------creation tabBriques-----------------//
   tableauBriques tab;
   tab.printTableauBriques(plateau.getwin());
+  
+  //-----------------------creation Bille-----------------------//
+  Bille maBille(pla1.getx()+pla1.getlongr()/2,pla1.gety()-1,0,0,'o',Bille::DROITE);
+  
   //-----------------------------fin creation-------------------//
+  
+
+  
 
   //-------------------------------instructions-----------------//
   std::string str= "SPACE ou KEY_DOWN pour arreter la plataforme ";
@@ -110,7 +118,17 @@ void jeu(options opt){
 			}
 		    pla1.print(plateau.getwin());
 		    //----------------------------------------------//
-		    
+            
+		    //---------------Bille-------------------------//
+            
+            maBille.effacePrintBille(plateau.getwin());
+            maBille.setX(pla1.getx()+pla1.getlongr()/2);
+            maBille.setY(pla1.gety()-1);
+            maBille.setDirDepart(Bille::DROITE);
+            maBille.print(plateau.getwin());
+            
+            //----------------------------------------------//
+            
 		    //---------------le reste du jeu---------------//
 		    J.addScore(1);		    
 		    J.printStats(infoJoueur.getwin());
@@ -132,6 +150,17 @@ void jeu(options opt){
 			    }
 			  pla1.print(plateau.getwin());
 			  //---------------------------------------------//
+              
+		    //---------------Bille-------------------------//
+            
+            maBille.effacePrintBille(plateau.getwin());
+            maBille.setX(pla1.getx()+pla1.getlongr()/2);
+            maBille.setY(pla1.gety()-1);
+            maBille.setDirDepart(Bille::GAUCHE);
+            maBille.print(plateau.getwin());
+            
+            //----------------------------------------------//
+            
 			  //---------------le reste du jeu---------------//
 			  J.addScore(1);			  
 			  J.printStats(infoJoueur.getwin());

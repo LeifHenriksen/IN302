@@ -23,7 +23,6 @@ class Brique
   unsigned int getl()const;
   unsigned int getX()const;
   unsigned int getY()const;
-  unsigned int getResistance() const;
 
   void setResistance(unsigned int r);
   void setCorp(char c);
