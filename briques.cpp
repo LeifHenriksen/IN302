@@ -51,6 +51,11 @@ void Brique::setY(unsigned int y)
   this->y=y; 
 }
 
+void Brique::perteResistance()
+{
+  this->resistance=this->resistance-1;
+}
+
 
 void Brique::setResistance(unsigned int r){resistance = r;};
 void Brique::setCorp(char c){corp = c;}
