@@ -73,7 +73,7 @@ void jeu(options opt){
   //-----------------------------fin creation-------------------//
 
   //-------------------------------instructions-----------------//
-  std::string str= "SPACE ou KEY_DOWN pour arreter la plataforme ";
+  std::string str= "SPACE ou KEY_DOWN pour arreter la plateforme ";
   plateau.popup(str);
   tab.printTableauBriques(plateau.getwin());
   //---------------------------fin instruc------------------------//
@@ -161,8 +161,8 @@ void jeu(options opt){
       sleep_for(milliseconds(vitesse));
       maBille.effacePrintBille(plateau.getwin());
       maBille.avancer();
-      maBille.contactBrique(tab);
       maBille.contactCoin(tab);
+      maBille.contactBrique(tab);
       maBille.contactRaquette(pla1.getx() , pla1.getx()+pla1.getlongr() , pla1.gety());
       maBille.contactBords(plateau.getLargeur() ,plateau.getHauteur());
     }

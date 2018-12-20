@@ -48,8 +48,10 @@ public:
     void changerTrajectoire(int angle);                     // ne prend que l'angle de la surface sur laquelle le choc a lieu
     void contactBords(int tailleX, int tailleY);            // prend taille grille de jeu
     void contactRaquette(int debutRaquette, int finRaquette, int yRaquette); // prend taille raquette et sa pos en Y
+    bool coinBrique(int x, int y, Brique uneBrique) const;
     bool billeDansBrique(Brique uneBrique) const;
-    void contactBrique(tableauBriques *tabBriques);
+    void contactCoin(tableauBriques &tabBriques);
+    void contactBrique(tableauBriques &tabBriques);
     void print(WINDOW* w) const;
     void effacePrintBille(WINDOW* w) const;
     

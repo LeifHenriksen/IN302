@@ -101,24 +101,43 @@ Bille::Bille(int x, int y, int dirX, int dirY, char icon, DirectionDepart dirDeb
         }
     }
     
+    bool Bille::coinBrique(int x, int y, Brique uneBrique)const{     // renvoie ((x,y) est une case touchant un coin de brique)
+        return(((x==uneBrique.getX()-1 || x==uneBrique.getX()+uneBrique.getl()) && y>=uneBrique.getY() && y<uneBrique.getY()+uneBrique.getL()) || ((y==uneBrique.getY()-1 || y==uneBrique.getY()+uneBrique.getL()) && x>=uneBrique.getX() && x<uneBrique.getX()+uneBrique.getl()));
+    }
+    
     bool Bille::billeDansBrique(Brique uneBrique) const{    // renvoie (bille sera dans brique)
         return(((posX+directionX>=uneBrique.getX() && posX+directionX<uneBrique.getX()+uneBrique.getl()) && (posY+directionY>=uneBrique.getY() && posY+directionY<uneBrique.getY()+uneBrique.getL())));
     }
     
-    void Bille::contactBrique(tableauBriques *tabBriques){
-        int nbrBriques=tabBriques->getTaille();
-        for (int i=0;i<nbrBriques;i++){
-            if (billeDansBrique(tabBriques->at(i))){
-                if ((posX==tabBriques->at(i).getX()-1 && posY==tabBriques->at(i).getY()+tabBriques->at(i).getL()+1) || (posX==tabBriques->at(i).getX()+tabBriques->at(i).getl()+1 && posY==tabBriques->at(i).getY()-1) || (posX==tabBriques->at(i).getX()+tabBriques->at(i).getl()+1 && posY==tabBriques->at(i).getY()+tabBriques->at(i).getL()+1) || (posX==tabBriques->at(i).getX()-1 && posY==tabBriques->at(i).getY()-1)){
-                    this->changerTrajectoire(45);
-                }
-                else if (posX==tabBriques->at(i).getX()+tabBriques->at(i).getl()+1 || posX==tabBriques->at(i).getX()-1){
-                    this->changerTrajectoire(90);
-                }
-                else if (posY==tabBriques->at(i).getY()+tabBriques->at(i).getL()+1 || posY==tabBriques->at(i).getY()-1){
+    void Bille::contactCoin(tableauBriques &tabBriques){
+        int nbrBriques=tabBriques.getTaille();
+        for (int i=0; i<nbrBriques;i++){
+            if (coinBrique(posX, posY, tabBriques.at(i)) && coinBrique(posX+directionX, posY+directionY, tabBriques.at(i))){
+                tabBriques.perteResistance(i);
+                if((posY==tabBriques.at(i).getY()-1 || posY==tabBriques.at(i).getY()+tabBriques.at(i).getL()) && posX>=tabBriques.at(i).getX() && posX<tabBriques.at(i).getX()+tabBriques.at(i).getl()){
                     this->changerTrajectoire(0);
                 }
-                tabBriques->at(i).setResistance(tabBriques->at(i).getResistance()-1);
+                else if((posX==tabBriques.at(i).getX()-1 || posX==tabBriques.at(i).getX()+tabBriques.at(i).getl()) && posY>=tabBriques.at(i).getY() && posY<tabBriques.at(i).getX()+tabBriques.at(i).getL()){
+                    this->changerTrajectoire(90);
+                }
+            }
+        }
+    }
+    
+    void Bille::contactBrique(tableauBriques &tabBriques){
+        int nbrBriques=tabBriques.getTaille();
+        for(int i=0;i<nbrBriques;i++){
+            if (this->billeDansBrique(tabBriques.at(i))){
+                tabBriques.perteResistance(i);
+                if((posY==tabBriques.at(i).getY()-1 || posY==tabBriques.at(i).getY()+tabBriques.at(i).getL()) && posX>=tabBriques.at(i).getX() && posX<tabBriques.at(i).getX()+tabBriques.at(i).getl()){
+                    this->changerTrajectoire(0);
+                }
+                else if((posX==tabBriques.at(i).getX()-1 || posX==tabBriques.at(i).getX()+tabBriques.at(i).getl()) && posY>=tabBriques.at(i).getY() && posY<tabBriques.at(i).getX()+tabBriques.at(i).getL()){
+                    this->changerTrajectoire(90);
+                }
+                else if((posX==tabBriques.at(i).getX()-1 || posX==tabBriques.at(i).getX()+tabBriques.at(i).getl()) && (posY==tabBriques.at(i).getY()-1 || posY==tabBriques.at(i).getY()+tabBriques.at(i).getL())){
+                    this->changerTrajectoire(45);
+                }
             }
         }
     }

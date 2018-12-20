@@ -64,6 +64,7 @@ class tableauBriques{
   //-------modif brique
   void setCorpAt(size_t i , char c);
   void setResistanceAt(size_t i, unsigned int r);
+  void perteResistance(size_t i);
   void setHauteurAt(size_t i , unsigned int H);
   void setLongeurAt(size_t i , unsigned int longr);
   void setPosxAt(size_t i , unsigned int _x);

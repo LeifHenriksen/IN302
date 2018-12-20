@@ -123,6 +123,7 @@ void tableauBriques::printTableauBriques(WINDOW *w) const
  //-------modif briques---------------------------------------//
 void tableauBriques::setCorpAt(size_t i , char c){data[i].setCorp(c);}
 void tableauBriques::setResistanceAt(size_t i , unsigned int r){data[i].setResistance(r);}
+void tableauBriques::perteResistance(size_t i){data[i].setResistance(data[i].getResistance()-1);}
 void tableauBriques::setHauteurAt(size_t i , unsigned int H){data[i].setL(H);}
 void tableauBriques::setLongeurAt(size_t i , unsigned int longr){data[i].setl(longr);}
 void tableauBriques::setPosxAt(size_t i , unsigned int _x){data[i].setX(_x);}
