@@ -31,6 +31,7 @@ class Brique
   void setl(unsigned int l);
   void setX(unsigned int x);
   void setY(unsigned int y);
+  void perteResistance();
   void printBrique(WINDOW *w);
   void printVide(WINDOW *w);
 };
