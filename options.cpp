@@ -133,7 +133,7 @@ void options::menu() {
 
   //    y  x
   std::string T[5][3];
-  std::string choices[5] = {"option1","Load Fichier config","Vitesse : plus petit = plus vite","longeur plataforme","Exit"};
+  std::string choices[5] = {"option1","Load Fichier config","Valeur haute => vitesse basse","longeur plataforme","Exit"};
 
   //faire le tab pour me menu
   for(int i = 0 ; i<5 ; i++)
@@ -277,13 +277,13 @@ void options::menu() {
 
 		      if(vitesseJeu == 1)
 			{
-			  std::string message = "Vitesse maximal \n vitesse = " + std::to_string(vitesseJeu);
+			  std::string message = "Vitesse maximale \n vitesse = " + std::to_string(vitesseJeu);
 			  menu.popupTimer(message , 1500);
 			}
 		      else
 			{
 			  vitesseJeu = vitesseJeu - 1;
-			  std::string message = "Vitesse augmenté \n nouvelle vitesse = " + std::to_string(vitesseJeu);
+			  std::string message = "Vitesse augmentée \n nouvelle vitesse = " + std::to_string(vitesseJeu);
 			  menu.popupTimer(message , 1500);
 			}
 
@@ -294,7 +294,7 @@ void options::menu() {
 		  case 2:
 		    {
 		      vitesseJeu = vitesseJeu + 1;
-		      std::string message = "Vitesse diminueé \n nouvelle vitesse = " + std::to_string(vitesseJeu);
+		      std::string message = "Vitesse diminuée \n nouvelle vitesse = " + std::to_string(vitesseJeu);
 		      menu.popupTimer(message , 1500);
 		    }
 		     break;
@@ -310,13 +310,13 @@ void options::menu() {
 		    {
 		      if(longeurPlatf-1 <= 0)
 			{
-			  std::string message = "Valeur Minimal = 1 \n Longeur Plataforme = " + std::to_string(longeurPlatf);
+			  std::string message = "Valeur Minimale = 1 \n Longeur Plateforme = " + std::to_string(longeurPlatf);
 			  menu.popupTimer(message , 1500);
 			}
 		      else
 			{
 			  longeurPlatf=longeurPlatf-1;
-			  std::string message = "Longeur de plataforme diminue \n nouvelle longeur = " + std::to_string(longeurPlatf);
+			  std::string message = "Longeur de plateforme diminuée \n nouvelle longeur = " + std::to_string(longeurPlatf);
 			  menu.popupTimer(message , 1500);
 			}
 		    }
@@ -326,7 +326,7 @@ void options::menu() {
 		  case 2:
 		    {
 		      longeurPlatf = longeurPlatf+1;
-		      std::string message = "Longeur de plataforme augmenté \n nouvelle longeur = " + std::to_string(longeurPlatf);
+		      std::string message = "Longeur de plateforme augmentée \n nouvelle longeur = " + std::to_string(longeurPlatf);
 		      menu.popupTimer(message , 1500);
 		    }
 		    break;

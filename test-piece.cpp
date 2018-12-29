@@ -58,7 +58,7 @@ void jeu(options opt){
   char c  =  '-';
 
   //creation de la raquette
-  platf pla1(opt.getLongPla(), x ,y ,c,3.0);
+  platf pla1(opt.getLongPla(), x ,y ,c,5.0);
 
   //print de la raquete
   pla1.print(plateau.getwin());

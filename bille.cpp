@@ -60,9 +60,7 @@ Bille::Bille(int x, int y, int dirX, int dirY, char icon, DirectionDepart dirDeb
     }
     void Bille::setVitesse(float vit)
     {
-
       vitesse=vit;
-
     }
 
 
