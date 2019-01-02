@@ -1,16 +1,10 @@
 #nom--------score 
 #NE PAS MODIFIER 
-Bob : 153
-Bob : 65
-Bob : 64
+Bob : 16
+Bob : 12
 Bob : 1
+Bob : 0
 user 5 : 0
-
-
-
-
-
-
 
 
 

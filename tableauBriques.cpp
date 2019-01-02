@@ -46,8 +46,10 @@ tableauBriques::tableauBriques() : taille(12) , alloc(12) , decalBriquesX(1) ,de
 
 tableauBriques::tableauBriques(size_t _taille) : taille(_taille) , alloc(_taille) , decalBriquesX(0) ,decalBriquesY(0) , distanceInterBriques(0) , nbDeLignes(1)
 {
-  Brique *tabB = new Brique [alloc];
-  data = tabB;
+  if (alloc > 0) {
+    Brique *tabB = new Brique [alloc];
+    data = tabB;
+  } else data = NULL;
 }
 
 
@@ -95,6 +97,44 @@ tableauBriques::tableauBriques(size_t _taille , unsigned int _decalBriquesX, uns
     std::cerr<<"constructeur tableauBriques : nbDeLignes <= 0 \n";
 
 }
+tableauBriques::tableauBriques(const tableauBriques &tab)
+{
+ taille=tab.taille;
+ alloc=tab.alloc;
+ decalBriquesX=tab.decalBriquesX;
+ decalBriquesY=tab.decalBriquesY;
+ nbDeLignes=tab.nbDeLignes;
+ distanceInterBriques=tab.distanceInterBriques;
+ data= new Brique[alloc];
+ for(size_t i=0;i<tab.taille ; i++)
+ {
+   data[i]=tab.data[i];
+ }
+ 
+}
+tableauBriques &tableauBriques::operator=(const tableauBriques &tab)
+{
+  if (this != &tab )
+  {
+    taille=tab.taille;
+    alloc=tab.alloc;
+    decalBriquesX=tab.decalBriquesX;
+    decalBriquesY=tab.decalBriquesY;
+    nbDeLignes=tab.nbDeLignes;
+    distanceInterBriques=tab.distanceInterBriques;  
+    if (data != NULL)
+    {
+      delete[] data;
+    }
+    data= new Brique[alloc];
+    for(size_t i=0;i<tab.taille ; i++)
+    {
+      data[i]=tab.data[i];
+    }
+  }
+  return *this;
+}
+
 //--------------------------fin constructeurs-------------------------------------------//
 // supprimer une brique
 void tableauBriques::supprimerBrique(int i)
@@ -105,6 +145,26 @@ void tableauBriques::supprimerBrique(int i)
   }
   taille--;
 }
+//ajout d'une brique
+  void tableauBriques::add(char corp , Color couleur,int y, int x , int L, int l,int resistance)
+  {
+    if (taille >= alloc)
+    {
+      if (alloc == 0) alloc = 2;else alloc *=2 ;
+      Brique *tmp=new Brique[alloc];
+      for (int i =0;i<taille ; i++)
+      {
+        tmp[i]=data[i];
+      }
+      if (data != NULL ) delete[] data;
+      data = tmp;
+      data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+      taille++;
+    }
+    else {data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+      taille++;}
+  }
+
 //----------------------lecture------------------------//
 size_t tableauBriques::getTaille() const{return taille;}
 

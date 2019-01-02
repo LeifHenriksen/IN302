@@ -18,7 +18,8 @@ class Brique
   Brique();
   Brique(char corp , Color couleur,int y, int x , int L, int l,int resistance);
   Brique(const Brique &b);
-
+  char getCorp() const ;
+  Color getCouleur() const;
   unsigned int getL()const;
   unsigned int getl()const;
   unsigned int getX()const;

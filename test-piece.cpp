@@ -11,6 +11,7 @@
 #include "joueur.h"
 #include "highScore.h"
 #include "bille.h"
+#include "sauvegarde.h"
 
 
 void jeu(options opt){
@@ -42,7 +43,7 @@ void jeu(options opt){
   //-----------------------Joueur----------------------//
   //x,y
   infoJoueur.print(((infoJoueur.getLargeur())/2)-5,0,"---STATS---",WYELLOW);
-  joueur J( "Bob", 10 , 1 , 0);
+  joueur J( "Bob", 5 , 1 , 0);
   J.printStats(infoJoueur.getwin());
 
   //----------------------fin Joueur-----------------------------//
@@ -53,7 +54,6 @@ void jeu(options opt){
 
   //y=plateau.getHauteur()-3 = 3 pixel sur le sol
   int x=plateau.getLargeur()/2,y=plateau.getHauteur()-3;
-
   //c = le char de la raquette
   char c  =  '-';
 
@@ -230,7 +230,14 @@ void jeu(options opt){
 
 
       }
+      
 
+    }
+    if(J.getNbVies()>0 && tab.getTaille()>0)
+    {
+      Tabsauv tableausave("fichier.txt");
+      tableausave.add(J.getNomJ(),J.getNbVies(),J.getScore(),J.getlvl(),tab);
+      tableausave.write("fichier.txt");
     }
 
   //---------------------------finBoucle de jeu--------------------------//

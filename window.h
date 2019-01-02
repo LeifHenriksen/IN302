@@ -80,8 +80,10 @@ class Window {
   void popup(std::string str) const;
   void popupTimer(std::string str , unsigned int ms)const;
   void clear() const; // enleve tout le contenu de la fenêtre
-
+  
 };
+Color IntToColor(int i);
+  int ColorToInt(Color c);
 
 
 

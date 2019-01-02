@@ -39,6 +39,14 @@ unsigned int Brique::getY()const
 {
   return y;
 }
+char Brique::getCorp() const 
+{
+  return corp;
+}
+Color Brique::getCouleur() const
+{
+  return couleur;
+}
 void Brique::setL(unsigned int L)
 {
   this->L=L;

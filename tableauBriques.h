@@ -1,6 +1,5 @@
 #ifndef TABLEAU_BRIQUES_H
 #define TABLEAU_BRIQUES_H
-
 #include <cstdlib>
 #include "briques.h"
 //A faire
@@ -36,8 +35,8 @@ class tableauBriques{
   //constructeur 3
   //nbLignes > 0
   tableauBriques(size_t _taille , unsigned int _decalBriquesX, unsigned int _decalBriquesY,unsigned int _distanceInterBriques, unsigned int _nbDeLignes);
-
-
+  tableauBriques(const tableauBriques &tab);
+  tableauBriques &operator=(const tableauBriques &tab);
 
 
 
@@ -46,6 +45,7 @@ class tableauBriques{
   //~tableauBriques();
 
   void supprimerBrique(int i);
+  void add(char corp , Color couleur,int y, int x , int L, int l,int resistance);
   //-------lecture
   size_t getTaille() const;
   size_t getAlloc() const;

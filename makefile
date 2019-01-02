@@ -1,7 +1,7 @@
 CC = g++
 FLAGS =  -lncurses
 PROGNAME = casse-briques
-SOURCES = bille.cpp briques.cpp highScore.cpp joueur.cpp options.cpp platf.cpp tableauBriques.cpp test-piece.cpp window.cpp
+SOURCES = bille.cpp briques.cpp highScore.cpp joueur.cpp options.cpp platf.cpp tableauBriques.cpp test-piece.cpp window.cpp sauvegarde.cpp
 VERSION = 'eval\ date\ +%d_%m_%Y'
 
 DEFAULT_GOAL = $(PROGRAME)
