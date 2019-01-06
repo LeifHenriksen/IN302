@@ -12,6 +12,7 @@
 #include "highScore.h"
 #include "bille.h"
 #include "sauvegarde.h"
+#include "level.h"
 
 
 void jeu(options opt){
@@ -70,6 +71,10 @@ void jeu(options opt){
   //-----------------------creation tabBriques-----------------//
   tableauBriques tab;
   tab.printTableauBriques(plateau.getwin());
+  /*Level niveaux[3];
+  int niveau=0;
+  niveaux[0]=Level(10,2,1,4,1,2);
+  tab=niveaux[0].get_tabBriques();*/
   //-----------------------------fin creation-------------------//
 
   //-------------------------------instructions-----------------//

@@ -71,8 +71,8 @@ using namespace std;
             for (int j = 0 ; j < nb_briques ; j++)
             {
                 do file.get(corp); while (corp == '\n' );
-               file >> couleur >> y >> x >> L >> l >> resistance;
-               tab.add(corp,IntToColor(couleur),y,x,L,l,resistance);
+               file >> y >> x >> L >> l >> resistance;
+               tab.add(corp,y,x,L,l,resistance);
               
             }
             add(nom,vies,score,niveau,tab);
@@ -122,7 +122,7 @@ using namespace std;
           for(int j =0;j< tabSave[i].getTabBriques().getTaille() ; j++)
           {
               b=tab.at(j);
-              file << b.getCorp() << " "<<b.getCouleur()<<" "<<b.getY()<<" "<<b.getX()<<" "<<b.getL()<<" "<<b.getl()<<" "<<b.getResistance()<<endl;
+              file << b.getCorp() <<" "<<b.getY()<<" "<<b.getX()<<" "<<b.getL()<<" "<<b.getl()<<" "<<b.getResistance()<<endl;
           }
       }
       file.close();

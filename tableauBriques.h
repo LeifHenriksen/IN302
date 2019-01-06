@@ -45,7 +45,7 @@ class tableauBriques{
   //~tableauBriques();
 
   void supprimerBrique(int i);
-  void add(char corp , Color couleur,int y, int x , int L, int l,int resistance);
+  void add(char corp,int y, int x , int L, int l,int resistance);
   //-------lecture
   size_t getTaille() const;
   size_t getAlloc() const;

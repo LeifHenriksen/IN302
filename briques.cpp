@@ -7,7 +7,7 @@ Brique::Brique():corp(' '),couleur(WRED),L(2),l(10),x(0),y(0),resistance(3)
 {
 
 }
-Brique::Brique(char corp,Color couleur,int y, int x , int L, int l,int resistance):corp(corp),couleur(couleur),L(L),l(l),x(x),y(y),resistance(resistance)
+Brique::Brique(char corp,int y, int x , int L, int l,int resistance):corp(corp),L(L),l(l),x(x),y(y),resistance(resistance)
 {}
 
 

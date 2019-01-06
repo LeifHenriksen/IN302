@@ -42,6 +42,7 @@ tableauBriques::tableauBriques() : taille(12) , alloc(12) , decalBriquesX(1) ,de
 
   //---------------------------fin createur rectangle--------------------------------------//
 
+
 }
 
 tableauBriques::tableauBriques(size_t _taille) : taille(_taille) , alloc(_taille) , decalBriquesX(0) ,decalBriquesY(0) , distanceInterBriques(0) , nbDeLignes(1)
@@ -146,7 +147,7 @@ void tableauBriques::supprimerBrique(int i)
   taille--;
 }
 //ajout d'une brique
-  void tableauBriques::add(char corp , Color couleur,int y, int x , int L, int l,int resistance)
+  void tableauBriques::add(char corp ,int y, int x , int L, int l,int resistance)
   {
     if (taille >= alloc)
     {
@@ -158,10 +159,10 @@ void tableauBriques::supprimerBrique(int i)
       }
       if (data != NULL ) delete[] data;
       data = tmp;
-      data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+      data[taille]=Brique(corp,y,x,L,l,resistance);
       taille++;
     }
-    else {data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+    else {data[taille]=Brique(corp,y,x,L,l,resistance);
       taille++;}
   }
 

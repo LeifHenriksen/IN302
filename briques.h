@@ -16,7 +16,7 @@ class Brique
   //largeur L=hauteur
   //longueur l
   Brique();
-  Brique(char corp , Color couleur,int y, int x , int L, int l,int resistance);
+  Brique(char corp ,int y, int x , int L, int l,int resistance);
   Brique(const Brique &b);
   char getCorp() const ;
   Color getCouleur() const;
