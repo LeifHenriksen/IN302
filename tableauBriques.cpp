@@ -11,16 +11,16 @@ tableauBriques::tableauBriques() : taille(12) , alloc(12) , decalBriquesX(1) ,de
   //creer le tab dynamic
   Brique *tabB = new Brique [alloc];
   data = tabB;
-  
-  
+
+
   //ajuster les coordonnes des briques
 
-  
+
   //------------------------------fait un rectangle de taille nbDeLignes -------------------//
   //longeur ligne, hauteur
   int longeurLignes = taille / nbDeLignes; // si le modulo != 0 le affichage ne marche pas
   int indice = 0;
-  
+
   for(int ligne = 0 ; ligne<nbDeLignes ; ligne++)
     {
       for(int i = 0 ; i<longeurLignes; i++)
@@ -34,20 +34,22 @@ tableauBriques::tableauBriques() : taille(12) , alloc(12) , decalBriquesX(1) ,de
 	    {
 	      data[indice].setY(decalBriquesY*ligne);
 	      data[indice].setX(data[indice-1].getX() + data[indice-1].getl() + distanceInterBriques);
-	      
+
 	    }
 	  indice = indice + 1;
 	}
     }
-  
+
   //---------------------------fin createur rectangle--------------------------------------//
-  
+
 }
 
 tableauBriques::tableauBriques(size_t _taille) : taille(_taille) , alloc(_taille) , decalBriquesX(0) ,decalBriquesY(0) , distanceInterBriques(0) , nbDeLignes(1)
 {
-  Brique *tabB = new Brique [alloc];
-  data = tabB;
+  if (alloc > 0) {
+    Brique *tabB = new Brique [alloc];
+    data = tabB;
+  } else data = NULL;
 }
 
 
@@ -59,16 +61,16 @@ tableauBriques::tableauBriques(size_t _taille , unsigned int _decalBriquesX, uns
     //creer le tab dynamic
     Brique *tabB = new Brique [alloc];
     data = tabB;
-    
-    
+
+
     //ajuster les coordonnes des briques
-    
-  
+
+
     //------------------------------fait un rectangle de taille nbDeLignes -------------------//
     //longeur ligne, hauteur
     int longeurLignes = taille / nbDeLignes; // si le modulo != 0 le affichage ne marche pas
     int indice = 0;
-    
+
     for(int ligne = 0 ; ligne<nbDeLignes ; ligne++)
       {
 	for(int i = 0 ; i<longeurLignes; i++)
@@ -82,27 +84,93 @@ tableauBriques::tableauBriques(size_t _taille , unsigned int _decalBriquesX, uns
 	      {
 		data[indice].setY(decalBriquesY*ligne);
 		data[indice].setX(data[indice-1].getX() + data[indice-1].getl() + distanceInterBriques);
-		
+
 	      }
 	    indice = indice + 1;
 	  }
     }
-    
+
     //---------------------------fin createur rectangle--------------------------------------//
-    
+
   }
   else
     std::cerr<<"constructeur tableauBriques : nbDeLignes <= 0 \n";
-  
+
 }
+tableauBriques::tableauBriques(const tableauBriques &tab)
+{
+ taille=tab.taille;
+ alloc=tab.alloc;
+ decalBriquesX=tab.decalBriquesX;
+ decalBriquesY=tab.decalBriquesY;
+ nbDeLignes=tab.nbDeLignes;
+ distanceInterBriques=tab.distanceInterBriques;
+ data= new Brique[alloc];
+ for(size_t i=0;i<tab.taille ; i++)
+ {
+   data[i]=tab.data[i];
+ }
+ 
+}
+tableauBriques &tableauBriques::operator=(const tableauBriques &tab)
+{
+  if (this != &tab )
+  {
+    taille=tab.taille;
+    alloc=tab.alloc;
+    decalBriquesX=tab.decalBriquesX;
+    decalBriquesY=tab.decalBriquesY;
+    nbDeLignes=tab.nbDeLignes;
+    distanceInterBriques=tab.distanceInterBriques;  
+    if (data != NULL)
+    {
+      delete[] data;
+    }
+    data= new Brique[alloc];
+    for(size_t i=0;i<tab.taille ; i++)
+    {
+      data[i]=tab.data[i];
+    }
+  }
+  return *this;
+}
+
 //--------------------------fin constructeurs-------------------------------------------//
+// supprimer une brique
+void tableauBriques::supprimerBrique(int i)
+{
+  for(int j = i ; j < taille ; j++)
+  {
+    data[j]=data[j+1];
+  }
+  taille--;
+}
+//ajout d'une brique
+  void tableauBriques::add(char corp , Color couleur,int y, int x , int L, int l,int resistance)
+  {
+    if (taille >= alloc)
+    {
+      if (alloc == 0) alloc = 2;else alloc *=2 ;
+      Brique *tmp=new Brique[alloc];
+      for (int i =0;i<taille ; i++)
+      {
+        tmp[i]=data[i];
+      }
+      if (data != NULL ) delete[] data;
+      data = tmp;
+      data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+      taille++;
+    }
+    else {data[taille]=Brique(corp,couleur,y,x,L,l,resistance);
+      taille++;}
+  }
 
 //----------------------lecture------------------------//
 size_t tableauBriques::getTaille() const{return taille;}
 
 size_t tableauBriques::getAlloc() const{return alloc;}
 
-Brique tableauBriques::at(size_t i) const{return data[i];}
+Brique &tableauBriques::at(size_t i) {return data[i];}
 
 unsigned int tableauBriques::getDecalBriquesX() const{return decalBriquesX;}
 
@@ -123,7 +191,6 @@ void tableauBriques::printTableauBriques(WINDOW *w) const
  //-------modif briques---------------------------------------//
 void tableauBriques::setCorpAt(size_t i , char c){data[i].setCorp(c);}
 void tableauBriques::setResistanceAt(size_t i , unsigned int r){data[i].setResistance(r);}
-void tableauBriques::perteResistance(size_t i){data[i].setResistance(data[i].getResistance()-1);}
 void tableauBriques::setHauteurAt(size_t i , unsigned int H){data[i].setL(H);}
 void tableauBriques::setLongeurAt(size_t i , unsigned int longr){data[i].setl(longr);}
 void tableauBriques::setPosxAt(size_t i , unsigned int _x){data[i].setX(_x);}

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+#include "sauvegarde.h"
 
 void init_colors(void)
 {
@@ -142,6 +143,8 @@ void Window::popup(std::string str) const{
     }
 }
 
+
+
 void Window::popupTimer(std::string str , unsigned int ms)const
 {
   using namespace std::this_thread;
@@ -172,3 +175,55 @@ void Window::popupTimer(std::string str , unsigned int ms)const
 
 
 void Window::clear() const{  werase(win); update(); }
+Color IntToColor(int i){
+  switch(i) {
+      case 0:
+          return WBLACK;
+          break;
+      case 1:
+          return WCYAN;
+          break;
+      case 2:
+          return WBLUE;
+          break;
+      case 3:
+          return WYELLOW;
+          break;
+      case 4:
+          return WGREEN;
+          break;
+      case 5:
+          return WMAGENTA;
+          break;
+      case 6:
+          return WRED;
+          break;
+      case 7:
+          return BWHITE;
+          break;
+      case 8:
+          return BCYAN;
+          break;
+      case 9:
+          return BBLUE;
+          break;
+      case 10:
+          return BYELLOW;
+          break;
+      case 11:
+          return BGREEN;
+          break;
+      case 12:
+          return BMAGENTA;
+          break;
+      case 13:
+          return BRED;
+          break;
+      default:
+          return BWHITE;
+      break;
+    } 
+}
+int ColorToInt(Color c) {
+  return (int)c;
+}

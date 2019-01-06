@@ -1,52 +1,10 @@
 #nom--------score 
 #NE PAS MODIFIER 
-Bob : 3831
-Bob : 3244
-Bob : 2510
-Bob : 2141
-Bob : 1150
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Bob : 16
+Bob : 12
+Bob : 1
+Bob : 0
+user 5 : 0
 
 
 

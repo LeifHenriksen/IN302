@@ -1,6 +1,7 @@
 #include "window.h"
 #include "platf.h"
 #include "options.h"
+#include <algorithm>
 #include <ncurses.h>
 #include <string>
 #include <cstdlib>
@@ -11,15 +12,16 @@
 #include "joueur.h"
 #include "highScore.h"
 #include "bille.h"
+#include "sauvegarde.h"
 
 
 void jeu(options opt){
   using namespace std::this_thread; // sleep_for, sleep_until
   using namespace std::chrono; // nanoseconds, system_clock, seconds
-  
- 
 
-  
+
+
+
   int ch; //ch = char clavier
   int h=opt.getH(),w=opt.getL();
 
@@ -38,31 +40,30 @@ void jeu(options opt){
   //---------------------text menu--------------------//
   menu.print(1,1,"Tapez q pour quitter !!!",WRED);
   //-----------------------fin text menu---------------//
-  
+
   //-----------------------Joueur----------------------//
   //x,y
   infoJoueur.print(((infoJoueur.getLargeur())/2)-5,0,"---STATS---",WYELLOW);
-  joueur J( "Bob", 3 , 1 , 0);
+  joueur J( "Bob", 5 , 1 , 0);
   J.printStats(infoJoueur.getwin());
-  
+
   //----------------------fin Joueur-----------------------------//
 
 
-  
+
   //---------------------raquette Start------------------------//
 
   //y=plateau.getHauteur()-3 = 3 pixel sur le sol
   int x=plateau.getLargeur()/2,y=plateau.getHauteur()-3;
-
   //c = le char de la raquette
   char c  =  '-';
 
   //creation de la raquette
-  platf pla1(opt.getLongPla(), x ,y ,c);
+  platf pla1(opt.getLongPla(), x ,y ,c,3.0);
 
   //print de la raquete
   pla1.print(plateau.getwin());
-  
+
   //--------------------raquette Fin---------------------------//
 
   Color col=WBLUE;
@@ -73,22 +74,25 @@ void jeu(options opt){
   //-----------------------------fin creation-------------------//
 
   //-------------------------------instructions-----------------//
-  std::string str= "SPACE ou KEY_DOWN pour arreter la plateforme ";
+  std::string str= "SPACE ou KEY_DOWN pour arreter la plataforme ";
   plateau.popup(str);
   tab.printTableauBriques(plateau.getwin());
   //---------------------------fin instruc------------------------//
 
   //-----------------------creation Bille-----------------------//
-  Bille maBille(pla1.getx()+pla1.getlongr()/2,pla1.gety()-1,0,0,'o',Bille::DROITE);
+  Bille maBille(pla1.getx()+pla1.getlongr()/2,pla1.gety()-1,0,0,'O',Bille::DROITE,0);
+
   maBille.print(plateau.getwin());
-  maBille.setDirDepart(Bille::GAUCHE);
+  //maBille.setDirDepart(Bille::GAUCHE);
   maBille.depart();
   //-----------------------------fin creation-------------------//
-  
+
   //----------------------boucle de jeu et controls--------------//
-  while((ch = getch()) != 'q')
+  while(ch != 'q')
     {
-      tab.printTableauBriques(plateau.getwin());
+      ch=0;
+      ch = getch();
+      //tab.printTableauBriques(plateau.getwin());
       maBille.print(plateau.getwin());
       J.printStats(infoJoueur.getwin());
       switch (ch)
@@ -104,43 +108,73 @@ void jeu(options opt){
 	  break;
 	case 'v':
 	  {
-	   
+
 	    maBille.avancer();
 	  }
 	  break;
 	case KEY_DOWN:
-	  break;  
+	  break;
 	case KEY_LEFT:
 	  {
 	     pla1.printVide(plateau.getwin());
-	     //maBille.effacePrintBille(plateau.getwin());
-	     if( pla1.contactmurG(plateau.getLargeur()))
+       if( pla1.contactmurG(plateau.getLargeur()))
 	       {
 		 //maBille.setX(maBille.getX()-1);
-		pla1.setx((pla1.getx())-1);
+		pla1.setx((pla1.getx())-1*pla1.getVitesse());
 	       }
-	     
-	     
+         else
+         {
+           pla1.printVide(plateau.getwin());
+           pla1.setx(0);
+           pla1.print(plateau.getwin());
+
+
+         }
+       if(maBille.getVitesse()==0){
+
+         maBille.effacePrintBille(plateau.getwin());
+         maBille.setDirDepart(Bille::GAUCHE);
+         maBille.setX(pla1.getx()+(pla1.getlongr()/2));maBille.setY(pla1.gety()-1);
+         maBille.print(plateau.getwin());
+       }
+
+	     //maBille.effacePrintBille(plateau.getwin());
+
+
+
 	     //maBille.setDirDepart(Bille::DROITE);
 	     //prints
 	     //maBille.print(plateau.getwin());
 	     pla1.print(plateau.getwin());
 	  }
 
-	  
+
 	  break;
 	case KEY_RIGHT:
 	  {
 
 	   pla1.printVide(plateau.getwin());
-	   //maBille.effacePrintBille(plateau.getwin());
-	     if( pla1.contactmurD(plateau.getLargeur()))
+     if( pla1.contactmurD(plateau.getLargeur()))
 	       {
 		 //maBille.setX(maBille.getX()+1);
-		pla1.setx((pla1.getx())+1);
+		pla1.setx((pla1.getx())+1*pla1.getVitesse());
 	       }
-	     
-	     
+         else{
+           pla1.printVide(plateau.getwin());
+           pla1.setx(plateau.getLargeur()-pla1.getlongr());
+           pla1.print(plateau.getwin());
+         }
+	   //maBille.effacePrintBille(plateau.getwin());
+     if(maBille.getVitesse()==0){
+
+       maBille.effacePrintBille(plateau.getwin());
+       maBille.setDirDepart(Bille::DROITE);
+       maBille.setX(pla1.getx()+(pla1.getlongr()/2));maBille.setY(pla1.gety()-1);
+       maBille.print(plateau.getwin());
+     }
+
+
+
 	     //maBille.setDirDepart(Bille::GAUCHE);
 	     //prints
 	     //maBille.print(plateau.getwin());
@@ -150,28 +184,88 @@ void jeu(options opt){
 	case '\n':
 	  break;
 	case '\t':
+  {
 	  Color tmp= menu.getCouleurBordure();
 	  menu.setCouleurBordure(plateau.getCouleurBordure());
 	  plateau.setCouleurBordure(tmp);
+  }
 	  break;
-	  
+    case ' ':
+
+    if(maBille.getVitesse()==0)
+    {
+      maBille.setVitesse(1);
+      maBille.depart();
+    }
+  break;
 	}
-      J.addScore(1);
-      //le delay    
-      sleep_for(milliseconds(vitesse));
+
+      //le delay
+      sleep_for(milliseconds(50));
+      //tab.printTableauBriques(plateau.getwin());
       maBille.effacePrintBille(plateau.getwin());
-      maBille.avancer();
-      maBille.contactCoin(tab);
-      maBille.contactBrique(tab);
+      if(maBille.getVitesse()!=0)
+      {
+        maBille.avancer();}
+      if(maBille.getY()==plateau.getHauteur()-1)
+      {
+
+        if(J.getNbVies()>0)
+        {
+          J.setNbVies(J.getNbVies()-1);
+          maBille.effacePrintBille(plateau.getwin());
+          maBille.setX(pla1.getx()+(pla1.getlongr()/2));maBille.setY(pla1.gety()-1);
+          maBille.print(plateau.getwin());
+          maBille.setVitesse(0.0);
+        }
+        else
+        {
+          ch='q';
+        }
+      }
+      maBille.contactBrique(&tab,plateau.getwin(),&J);
       maBille.contactRaquette(pla1.getx() , pla1.getx()+pla1.getlongr() , pla1.gety());
       maBille.contactBords(plateau.getLargeur() ,plateau.getHauteur());
+      if(tab.getTaille()==0)
+      {
+        J.setScore(J.getScore()+J.getNbVies());
+        ch='q';
+
+
+      }
+      
+
     }
-  
+    if(J.getNbVies()>0 && tab.getTaille()>0)
+    {
+        std::string str="Voulez vous sauver ?";
+        int hautr = 5;
+        hautr = hautr + std::count(str.begin() ,str.end(),'\n');
+
+        int longr = str.size()/hautr;
+        if(longr<30)
+        longr = 30;
+        
+        Window FenetrePop(hautr,longr+1,(plateau.getLargeur()/2)-(longr/2),(plateau.getHauteur()/2)-(hautr-1),0);
+        FenetrePop.print(1, 1 , str);
+        FenetrePop.print(1, hautr-1 , "(y/n)");
+        int choice = 0;
+        while(choice!=121 && choice!=110)
+        {
+            choice = getch();
+        }
+        if (choice==121){
+            Tabsauv tableausave("fichier.txt");
+            tableausave.add(J.getNomJ(),J.getNbVies(),J.getScore(),J.getlvl(),tab);
+            tableausave.write("fichier.txt");
+        }
+    }
+
   //---------------------------finBoucle de jeu--------------------------//
   highScore high;
   if(high.estUnHighScore(J.getScore()))
     high.mettreNouveauHighScore(J.getScore(),J.getNomJ());
-  
+
   high.pop(plateau);
 
 }
@@ -201,16 +295,16 @@ void myprogram(){
   //std::string str= "hola \n " + std::to_string(m);
   //mainmenu.popup(str);
 
- 
+
   //----------------------------MENU-START--------------------------------//
 
   while(1)
     {
       //   box(mainmenu  ,0 , 0);
-    
+
       mainmenu.updateframe();
 
-      
+
       for(int i = 0 ; i<3 ; i++)
 	{
 	  if(i==highlight)
@@ -220,7 +314,7 @@ void myprogram(){
 	  wattroff(mainmenu.getwin() , A_REVERSE);
 	}
       choice = wgetch(mainmenu.getwin());
-      
+
       switch(choice)
 	{
 	case KEY_UP:
@@ -233,12 +327,12 @@ void myprogram(){
 	  if (highlight == 3)
 	    highlight = 2;
 	  break;
-	  
+
 	default:
 	  break;
-	  
+
 	}
-      
+
       if(choice == 10)
 	{
 	  switch(highlight)
@@ -251,7 +345,7 @@ void myprogram(){
 	      break;
 	    case 2:
 	      break;
-	      
+
 	    }
 	}
       werase(mainmenu.getwin());
@@ -261,7 +355,7 @@ void myprogram(){
       }
 
     }
-  
+
   //----------------------------MENU-FIN--------------------------------//
 
 }
